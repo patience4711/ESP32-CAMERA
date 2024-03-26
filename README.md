@@ -3,7 +3,7 @@ With this cheap little board we can have a very nice camera to view on our phone
 The example software has many shortcomings that i improved. <br> The result is a complete websverver with very nice features.
 ## some of the features
 - Easy to connect to your wifi via a config portal
-- Can save setting for 5 different video formats
+- Can save settings for 5 different video formats
 - Camera can be viewed on homepage, optimized for mobile devices
 - the flashlight can be controlled via the homepage
 - works well when viewed from outside your network
