@@ -1,12 +1,16 @@
 # ESP32-CAMERA
 With this cheap little board we can have a very nice camera to view on our phone. <br> 
 The example software has many shortcomings that i improved. This was not an easy job as the original software is difficult to understand and not documented.<br>The result is a complete websverver with very nice features.
+![camhouse](https://github.com/patience4711/ESP32-CAMERA/assets/12282915/22a264fe-db46-47ee-ad5b-8151959807ca)
+
 ## some of the features
 - Easy to connect to your wifi via a config portal
 - Can save settings for 5 different video formats
-- Camera can be viewed on homepage, optimized for mobile devices
+- camera can be viewed on homepage, optimized for mobile devices
 - the flashlight can be controlled via the homepage
 - works well when viewed from outside your network
+- very compact, small enough to fit in a bird's nestbox
+- the stream can be opened in any browser, easy to embed in website
 
 frontpage<br>
 ![frontpage](https://github.com/patience4711/ESP32-CAMERA/assets/12282915/c96e1cb3-6924-4acb-8fa0-94ae172bee7d)
