@@ -16,7 +16,7 @@ frontpage<br>
 ![frontpage](https://github.com/patience4711/ESP32-CAMERA/assets/12282915/c96e1cb3-6924-4acb-8fa0-94ae172bee7d)
    
 ## downloads
-you can find the latest binary here [ESP32-camerawebserver-v1_3](https://github.com/patience4711/ESP32-CAMERA/blob/main/ESP32CameraWebServer_v1_3.ino.esp32.bin)<br>
+you can find the latest binary here [ESP32-CAM-v1_3](https://github.com/patience4711/ESP32-CAMERA/blob/main/ESP32-CAM_v1_3.ino.esp32.bin)<br>
 if you own a 3d-printer you can use [camhouse.stl](https://github.com/patience4711/ESP32-CAMERA/blob/main/camhouse.stl) end [camhouse_top.stl](https://github.com/patience4711/ESP32-CAMERA/blob/main/camhouse_TOP.stl) to print a nice housing.
 
 ## compile this sketch
