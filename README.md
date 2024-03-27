@@ -23,6 +23,6 @@ if you own a 3d-printer you can use [camhouse.stl](https://github.com/patience47
 You can use the provided binary but if you must compile it yourself: read the legende tab for instructions on settings in Arduino IDE
 <br>Please note: by popular demand I have published the code here but i do not feel responsible for problems as to compiling. Impossible for me to know why it doesn't compile in your situation.
 
-## moree challenges
+## other challenges
 I tried to make this sketch work with bluetooth and skip the wifi config portal. Unfortunately this didn't work as the available programspace is too small.
 So other things i had in mind (like a touch button that sends an MQTT message to make it a doorbell) are not feasible at this point. Still one thing to research is to make a custom partition scheme so that we have more program space.
