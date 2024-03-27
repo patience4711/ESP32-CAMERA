@@ -175,12 +175,16 @@ var hihaho = document.getElementById("strm").src;
 if(hihaho.indexOf("dummy") == -1) {
 window.location.reload();  
 } else {
-
 // show a preload
 document.getElementById("fake").style.display = "none";
 document.getElementById("overlay").style.display="block";
 
+if (location.href.indexOf("#") != -1) {
+console.log("found hash");  
+var currentUrl = window.location.href.slice(0, -2); // remove the /#
+} else {
 var currentUrl = window.location.href.slice(0, -1); // remove the slash
+}
 console.log("currentUrl = " + currentUrl);
 //the regex checks if there is a colon with at least 1 digit behind it (and no other characters slashes)
 var regex = /^.+:\d+$/;
@@ -200,7 +204,7 @@ document.getElementById("strm").src = newUrl;
 }
 
 function helpfunctie() {
-alert("In case of malfunction: \nOnly one client at a time is possible. Check if the stream is opened in another browser or window.\nIf you see the warning \"camera not started\", please reboot. \n\nTo view the stream in a browser, the url is\"camera-ip:91/stream");
+alert("In case of malfunction: \nOnly one client at a time is possible. Check if the stream is opened in another browser or window.\nIf you see the warning \"camera not started\", please reboot.\nWhen there is a hash (#) in your url it won't work! \n\nTo view the stream in a browser, the url is\"camera-ip:91/stream");
 }
 
 </script>
