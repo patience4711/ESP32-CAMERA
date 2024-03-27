@@ -340,8 +340,7 @@ const char INDEXHA_HTML[] = R"=====(
         <div id='msect'><center>
         
             <div id="logo">
-                <label for="nav-toggle-cb" id="nav-toggle">&#9776;&nbsp;&nbsp;Toggle hansiart espcamera view</label>
-                <button onclick="window.history.go(-1);">home</button>
+                <button onclick="goBack()">home</button>
             </div>
            <section class="main"> 
            
@@ -833,7 +832,23 @@ document.addEventListener('DOMContentLoaded', function (event) {
     }
 
 })
-
+function goBack() {
+  //go back to the main page find the url
+var currentUrl = window.location.href.slice(0, -1); // remove the slash
+console.log("currentUrl = " + currentUrl);
+// is url + port so we slice the port off
+//the regex checks if there is a colon with at least 1 digit behind it (and no other characters slashes)
+var regex = /^.+:\d+$/; // colon with at least 1 digit
+while (regex.test(currentUrl)) {
+currentUrl = currentUrl.slice(0, -1);  
+console.log("currentUrl = " + currentUrl);
+}
+//we end up with the colon so we slice it too
+currentUrl = currentUrl.slice(0, -1);
+console.log("currentUrl = " + currentUrl);
+window.location.assign(currentUrl);
+ 
+}
         </script>
     </body>
 </html>

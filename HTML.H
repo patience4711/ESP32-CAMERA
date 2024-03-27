@@ -123,6 +123,7 @@ a:focus {background-color: red;}
     padding: 14px 26px 10px 12px; 
     width: 50px; 
    }
+  input { font-size:18px; }
 }
 )=====";
 
@@ -220,7 +221,7 @@ alert("In case of malfunction: \nOnly one client at a time is possible. Check if
 <image id="strm" src="dummy" onclick="toggle_view()" onload="contentLoaded(this)" onloadstart="stalled()" style="display:none"></image>
 
 <br>
-<p>version ESP32CameraWebserver-v1_3<br>Powered by hansiart</p>
+<p>ESP32-CAM-v1_3 Powered by hansiart</p>
 </div>
 </html>
 )====="; 

@@ -3,7 +3,7 @@ Serial.println("we are in handle serial");
 int SerialInByteCounter = 0;
 char InputBuffer_Serial[100] = "";
 byte SerialInByte;  
- Serial.println("incoming bytes available, number = " + String(Serial.available()) );
+// Serial.println("incoming bytes available, number = " + String(Serial.available()) );
 
  while(Serial.available()) {
              SerialInByte=Serial.read(); 
@@ -14,11 +14,11 @@ byte SerialInByte;
             }    
             if(SerialInByte=='\n') {                                              // new line character
               InputBuffer_Serial[SerialInByteCounter]=0;
-              Serial.println(F("found new line"));
+  //            Serial.println(F("found new line"));
              break; // serieel data is complete
             }
        }   
-Serial.println("InputBuffer_Serial = " + String(InputBuffer_Serial) );
+//Serial.println("InputBuffer_Serial = " + String(InputBuffer_Serial) );
 // evaluate the incomming data
           if (strlen(InputBuffer_Serial) > 3){                                // need to see minimal 8 characters on the serial port
                                // Command from Master to RFLink
@@ -27,11 +27,22 @@ Serial.println("InputBuffer_Serial = " + String(InputBuffer_Serial) );
                   // Handle Device Management Commands
                   // -------------------------------------------------------
                   
-                  if (strcasecmp(InputBuffer_Serial, "CAMSET") == 0) {
-                     Serial.println("\provide a number 1 - 10");
-                       int x = readSerial().toInt();
-                       setFsize(x);
-                   return;
+                  if (strcasecmp(InputBuffer_Serial, "SPIFFS") == 0) {
+                    File root = SPIFFS.open("/");
+                    File file = root.openNextFile();
+                    int total = 0;
+                    while(file){
+                       //Serial.print("FILE: ");
+                       //Serial.println(file.name());
+                       //Serial.println(file.size());
+                       total += file.size();
+                       Serial.println("File: " + String(file.name()) + " size: " + String(file.size()) ); 
+                       
+                       file = root.openNextFile();
+                    }
+                    Serial.println("total SPIFFS = " + String(total));
+                    return;
+                  
                   
                   } else
                   if (strcasecmp(InputBuffer_Serial,"REBOOT")==0) {

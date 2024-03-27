@@ -37,3 +37,5 @@
 //<!--<div id="fake" style="display:block;" onclick='toggle_view()'><h3><br><br><br>&nbsp&nbspClick to toggle camera view !</h3></div>
 //<object data="dummy" type="image/jpeg" id="stream-container" style="display:none;" onclick='toggle_view()' onload="contentLoaded(this)"><h3>&nbsp&nbspstream currently not available</h3></object>
 //-->
+
+// from camindex logo <label for="nav-toggle-cb" id="nav-toggle">&#9776;&nbsp;&nbsp;Toggle hansiart espcamera view</label>

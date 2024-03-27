@@ -110,90 +110,7 @@ if ( static_ip[0] == '\0' || static_ip[0] == '0' ) {
 //delay(500);  //wait half a second after sending the data 
 }
 
-//asyserver.on("/IPconfig", HTTP_GET, [](AsyncWebServerRequest *request) {
-////void handleIPconfig() {
-//char static_ip2[16] = "";
-//  // er kan bijna geen verkeerd ip worden opgegeven.
-//  //de serverargumenten verzamelen
-//strcpy( static_ip2, request->getParam("ip")->value().c_str() );
-//   
-//  String adres="";
-//  String zin="";
-//  bool reBoot = false;
-//  bool leegmaken = false;
-//
-//// we gaan nu kijken of dhcp is gekozen. zo ja, static_ip2 leegmaken
-//String optie = server.arg("keuze");
-//if ( optie == "DHCP") {
-//    DebugPrint("dhcp ingesteld, static_ip leegmaken, optie = ");
-//    DebugPrintln(optie);
-//    static_ip2[0] = '\0';
-//  }
-//
-//  //we moeten nu kijken of het ip is veranderd, dit heeft invloed op de confirm pagina
-//  //bij dhcp wordt static_ip leeggemaakt dus dit is altijd waar.
-//  //hoe doen we dit
-//  //We hebben de variable static_ip, die vergelijken we met de opgegeven waarde
-//  //deze hebben we eventueel nul gemaakt met de selectbox
-//  //Als niet gelijk dan is de waarde veranderd 
-//     String test1=String(static_ip);  
-//     String test2=String(static_ip2);
-//        DebugPrint("de teststrings zijn: ");
-//        DebugPrintln(test1);
-//        DebugPrintln(test2);        
-//
-//     if (String(static_ip) != String(static_ip2) ) {
-//       DebugPrintln("het IP is veranderd");
-//      //static_ip=static_ip2;
-//      strcpy(static_ip, static_ip2);
-//        // als er een ip is opgegeven dan zetten we de ip gevens in de confirmpage
-//      if (static_ip[0] != '\0' && static_ip[0] != '0') {
-//           adres = String(static_ip);
-//           DebugPrint("het opgegeven ip = "); DebugPrintln(adres);
-//           zin = F("Het opgegeven IP adres is <strong><a href='http://{adres1}'>http://{adres2}</a></strong>");
-//           zin += F("<br>Type het nieuwe IP adres in de adresbalk van uw browser of klik op de link.<br>");
-//           zin += F("<br>Deze pagina sluit automatisch na enkele seconden<br><br><br></div><br><br> <a class='bt rad' href='/MENU'>OK</a>");
-//           zin.replace("{adres1}" , adres);
-//           zin.replace("{adres2}" , adres);
-//           reBoot = true;
-//          } else {
-//          // als er geen ip is opgegeven dan proberen we meteen te verbinden 
-//           zin="Er is geen IP opgegeven, dit is nu onbekend !!<br><br>Let op: De configuratie mode (AP) wordt ingesteld<br>De led brandt nu continu. Maak verbinding met het AP<br>zodat u het DHCP ip adres kunt achterhalen.<br><br>U kunt deze pagina afsluiten.<br><br></div>";
-//           adres ="/";   
-//           value=11; //hierdoor reboot hij ook maar naar ap
-//          }
-//    
-//     //nu gaan we de confirmpage tonen
-//      DebugPrintln("we gaan een nieuwe webpage inlezen in toSend");
-//      toSend = FPSTR(HTML_HEAD);
-//      toSend += FPSTR(CONFIRM_IP);
-//      toSend.replace("{adres0}" , adres);
-//      toSend.replace("{zin}" , zin);
-// //     server.send(200, "text/html", toSend); //send the html code to the client
-// //     delay(500);//wait half a second after sending the dataconfigSave();
-//      DebugPrintln("IPconfig opgeslagen");
-//    
-//
-//   wifiConfigsave();
-//
-//      if (reBoot){ 
-//        ESP.restart(); }
-//
-//} else {
-//    //  het IP is hetzelfde gebleven dus alleen de confirmpagina
-//
-//       wifiConfigsave();
-//   
-//      toSend = FPSTR(HTML_HEAD);
-//      toSend += FPSTR(CONFIRM);
-//    
-////      server.send(200, "text/html", toSend); //send the html code to the client
-//      delay(500);//wait half a second after sending the dataconfigSave();
-//      DebugPrintln("ipconfig saved");
-//      ESP.restart();
-//    }
-////}
-//  });
+
 void set_ipUtils() {
 asyserver.on("/IPconfig", HTTP_GET, [](AsyncWebServerRequest *request) {
 
@@ -202,8 +119,8 @@ char static_ip2[16] = "";
 IPAddress ipc = WiFi.gatewayIP();
 String gwcheck = String(ipc[0]) + "." + String(ipc[1]) + "." + String(ipc[2]);
 Serial.println("\ngwcheck = " + gwcheck );
-  // er kan bijna geen verkeerd ip worden opgegeven.
-  //de serverargumenten verzamelen
+  // almost impossible to enter an invalid ip.
+  // collect the server args
 strcpy( static_ip2, request->getParam("ip")->value().c_str() );
 String ipcheck = String(static_ip2[0]) + "." + String(static_ip2[1]) + "." + String(static_ip2[2]);   
 Serial.println("\ipcheck = " + ipcheck );
@@ -222,12 +139,12 @@ if ( optie == "DHCP") {
     static_ip2[0] = '\0';
   }
 
-  //we moeten nu kijken of het ip is veranderd, dit heeft invloed op de confirm pagina
-  //bij dhcp wordt static_ip leeggemaakt dus dit is altijd waar.
-  //hoe doen we dit
-  //We hebben de variable static_ip, die vergelijken we met de opgegeven waarde
-  //deze hebben we eventueel nul gemaakt met de selectbox
-  //Als niet gelijk dan is de waarde veranderd 
+  // we now need to check if the IP has changed, this will affect the confirm page
+  // with dhcp static_ip is cleared so this is always true.
+  // how do we do this ?
+  // We have the variable static_ip, which we compare with the specified value
+  // we may have made this null with the selectbox
+  // If not equal then the value has changed 
      String test1=String(static_ip);  
      String test2=String(static_ip2);
         DebugPrint("de teststrings zijn: ");
@@ -251,14 +168,13 @@ if ( optie == "DHCP") {
            zin.replace("{adres2}" , adres);
            
           } else {
-          // als er geen ip is opgegeven dan proberen we meteen te verbinden 
+          // if no ip is specified we try to connect at once 
            zin="IP not specified, this is unknown now !!<br><br>NOTE: the configuration modus (AP) is started<br>The led is lighted up. Connect to the AP<br>so you can find out the DHCP ip address.<br><br>You can close this page.<br><br></div>";
            adres ="/";   
-           signalFlag = 11; //hierdoor reboot hij ook maar naar ap
+           signalFlag = 11; // reboot to AP
           }
     
-     //nu gaan we de confirmpage tonen
-//      DebugPrintln("we gaan een nieuwe webpage inlezen in toSend");
+      // now we show the confirm page confirmpage tonen
 
       toSend = FPSTR(CONFIRM_IP);
       toSend.replace("{adres0}" , adres);
