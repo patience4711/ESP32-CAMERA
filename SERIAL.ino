@@ -28,7 +28,7 @@ Serial.println("InputBuffer_Serial = " + String(InputBuffer_Serial) );
         // Handle Device Management Commands
         // -------------------------------------------------------
         
-        if (strcasecmp(InputBuffer_Serial, "PRINTOUT_SPIFFS") == 0) {
+        if (strcasecmp(InputBuffer_Serial, "PRINTOUT-SPIFFS") == 0) {
           File root = SPIFFS.open("/");
           File file = root.openNextFile();
           int total = 0;
