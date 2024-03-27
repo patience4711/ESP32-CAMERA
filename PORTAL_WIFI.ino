@@ -170,23 +170,26 @@ request->send(200, "text/html", toSend); //send the html code to the client
   request->send(200, "text/html", toSend); //send the html code to the client 
    }); 
 
-asyserver.addHandler(new CaptiveRequestHandler()).setFilter(ON_AP_FILTER); //only when requested from AP
+  asyserver.addHandler(new CaptiveRequestHandler()).setFilter(ON_AP_FILTER); //only when requested from AP
 
   asyserver.begin(); // Web server start
   DebugPrintln("started async HTTP server for the portal");
   digitalWrite(led_onb, LED_AAN);  // led aan
 
-  // now we enter an infinitive loop that we leave only after 5 minutes, 
+  // *******************************************************************************
+  //                 connection loop
+  // *******************************************************************************
+  // now we enter a loop that we leave only after 5 minutes, 
   // or when via server.handleClient something happens   
-  //  bool Timed_Out = true;
+  // bool Timed_Out = true;
   Serial.println("entering the infinitive loop with heartbeat");
-  laatsteMeting = millis(); //voor de time-out
+  laatsteMeting = millis(); //for the time-out
   // this is the infinitive  loop 
   static unsigned long heartbeat = 0;
   while (millis() < laatsteMeting + 300*1000UL) { // 5 minuten== 300 30 == 30sec
   if ( millis() > heartbeat + 10*1000UL ) {
-    heartbeat = millis(); // elke 10 sec een heartbeat
-    Serial.print("a ");
+    //heartbeat = millis(); // each 10 sec a heartbeat
+    //Serial.print("a ");
   }
   if (tryConnectFlag) { // there are credentials provided
       if (wifiConnect())  {
@@ -200,9 +203,9 @@ asyserver.addHandler(new CaptiveRequestHandler()).setFilter(ON_AP_FILTER); //onl
   if(Serial.available()) { // make the serial monitor work
     handle_Serial();
    }
-      //DNS
+     //DNS
     dnsServer.processNextRequest();
-   //HTTP
+     //HTTP
     //portalserver.handleClient();
     //yield();
   } 

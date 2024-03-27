@@ -1,41 +1,6 @@
 
-//void writeStruct( String wichfile ) {
-////void writeStruct( String whichfile, int nummer) {
-//      String toOpen = "/" + wichfile + ".conf"; // must be /wificonfig.config
-//      File configFile = SPIFFS.open(toOpen, "w");
-//        
-//        if (!configFile)
-//           {
-//             Serial.print(F("Failed to open for write : ")); Serial.println(toOpen);            
-//           } 
-//               Serial.print(F("Opened for UPDATE....")); Serial.println(wichfile);
-//               configFile.write( (unsigned char *)&wichfile, sizeof(wichfile) );
-//               configFile.close();
-// }
-//
-//void readStruct(String wichfile) {
-//      String toOpen = "/" + wichfile + ".conf"; 
-//      File configFile = SPIFFS.open(toOpen, "r");
-////      String devic = whichfile.substring(9,10);
-////      int device = devic.toInt();
-//        if (!configFile)
-//           {
-//              Serial.print(F("Failed to open for read")); Serial.println(toOpen);
-//              return;           
-//           } 
-//              Serial.print(F("Opened for read....")); Serial.println(toOpen);
-//              //Serial.printf("Start Position =%u \n", configFile.position());
-//
-//              configFile.read( (unsigned char *)&wichfile, sizeof(wichfile) );
-//              configFile.close();
-//}
+// ******************   spiffs r/w  *************************
 
-
-
-
-// ******************   spiffs lezen  *************************
-
-// als er geen spiffs bestand is dan moet hij eigenlijk altijd een ap openenen
 void Files_Read() {
   DebugPrintln("mounting FS...");
  if (SPIFFS.begin()) {
@@ -109,7 +74,7 @@ void wifiConfigsave() {
     if (!configFile) {
       DebugPrintln("failed to open config file for writing");
     }
-    DebugPrintln("wificonfig.json in SPIFFS geschreven");
+    DebugPrintln("wrote wificonfig.json in SPIFFS");
     #ifdef DEBUG
     serializeJson(json, Serial);
     Serial.println("");
@@ -228,7 +193,7 @@ void cameraConfigsave() {
 // *********************************************************************
 
 bool file_open_for_read(String bestand) {
-      DebugPrint("we zijn in file_open_for_read, bestand = "); DebugPrintln(bestand); 
+      DebugPrint("we are in file_open_for_read, bestand = "); DebugPrintln(bestand); 
       if (!SPIFFS.exists(bestand)) { 
       DebugPrintln("file does not exist");
       return false;
