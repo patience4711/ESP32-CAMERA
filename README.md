@@ -25,5 +25,7 @@ You can use the provided binary but if you must compile it yourself: read the le
 <br>Please note: by popular demand I have published the code here but i do not feel responsible for problems as to compiling. Impossible for me to know why it doesn't compile in your situation.
 
 ## other challenges
+view orientation
+The esp32cam boards can gav a different image orientation, i have 2 boards, one is portrait and the other landscape. So there should be an option to rotate the image in the software. I have already found a way to do this.
 I tried to make this sketch work with bluetooth and skip the wifi config portal. Unfortunately this didn't work as the available programspace is too small.
 So other things i had in mind (like a touch button that sends an MQTT message to make it a doorbell) are not feasible at this point. Still one thing to research is to make a custom partition scheme so that we have more program space.
