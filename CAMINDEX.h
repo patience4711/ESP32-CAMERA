@@ -1,5 +1,4 @@
-
-//hansiart mods line 541 586(hideDiv) 567(save button)
+//hansiart mods line 541 586(hideDiv) 567(save button) 
 //static const char PROGMEM INDEXHA_HTML[] = R"rawliteral(
 const char INDEXHA_HTML[] = R"=====(
 <!doctype html>
@@ -833,12 +832,13 @@ document.addEventListener('DOMContentLoaded', function (event) {
 
 })
 function goBack() {
-  //go back to the main page find the url
-var currentUrl = window.location.href.slice(0, -1); // remove the slash
+//go back to the main page from port 90. we need to find the url
+var currentUrl = window.location.href.slice(0, -1); // remove the last character # or /
 console.log("currentUrl = " + currentUrl);
 // is url + port so we slice the port off
-//the regex checks if there is a colon with at least 1 digit behind it (and no other characters slashes)
+//the regex checks if there is a colon with at least 1 digit behind it (and no other characters {slashes)
 var regex = /^.+:\d+$/; // colon with at least 1 digit
+// slice the last character until no digits anymore
 while (regex.test(currentUrl)) {
 currentUrl = currentUrl.slice(0, -1);  
 console.log("currentUrl = " + currentUrl);

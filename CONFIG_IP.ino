@@ -158,7 +158,7 @@ if ( optie == "DHCP") {
 
         // als er een ip is opgegeven dan zetten we de ip gevens in de confirmpage
       if (static_ip[0] != '\0' && static_ip[0] != '0') {
-           signalFlag = 12; // make it reboot in the loop
+           actionFlag = 12; // make it reboot in the loop
            adres = String(static_ip);
            DebugPrint("the specified ip = "); DebugPrintln(adres);
            zin = F("The specified IP is <strong><a href='http://{adres1}'>http://{adres2}</a></strong>");
@@ -171,7 +171,7 @@ if ( optie == "DHCP") {
           // if no ip is specified we try to connect at once 
            zin="IP not specified, this is unknown now !!<br><br>NOTE: the configuration modus (AP) is started<br>The led is lighted up. Connect to the AP<br>so you can find out the DHCP ip address.<br><br>You can close this page.<br><br></div>";
            adres ="/";   
-           signalFlag = 11; // reboot to AP
+           actionFlag = 11; // reboot to AP
           }
     
       // now we show the confirm page confirmpage tonen
@@ -183,7 +183,7 @@ if ( optie == "DHCP") {
       wifiConfigsave();
   
      }
-     Serial.println("set signalFlag to " + String(signalFlag) );
+ //    Serial.println("set ActionFlag to " + String(actionFlag) );
      request->send(200, "text/html", toSend);
   });
 }

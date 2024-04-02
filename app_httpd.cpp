@@ -1,4 +1,3 @@
-
 // hansiart mods 529 flashled
 // 538 save settings
 
@@ -546,7 +545,7 @@ static esp_err_t cmd_handler(httpd_req_t *req){
 
     httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
     return httpd_resp_send(req, NULL, 0);
-}
+} // end cmd handler
 
 static esp_err_t status_handler(httpd_req_t *req){
     static char json_response[1024];

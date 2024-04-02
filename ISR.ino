@@ -23,7 +23,7 @@ int val = digitalRead(0);
     return; // doe niks want knop is hoog dus het is een toevalligheid geweest
  }
 attachInterrupt(digitalPinToInterrupt(0), isr, FALLING);
-signalFlag = 9; //button pressed
+actionFlag = 9; //button pressed
 yield();
 return; 
 // // nu wachten we weer maar nu langer 

@@ -3,11 +3,25 @@ Serial.println("we are in handle serial");
 int SerialInByteCounter = 0;
 char InputBuffer_Serial[100] = "";
 byte SerialInByte;  
+// first check if there is enough data, at least 13 bytes
+delay(200); //we wait a little for more data as the esp seems slow
+if(Serial.available() < 13 ) {
+  // les then 13, we can't expect more so we give up 
+  while(Serial.available()) { Serial.read(); } // make the buffer empty 
+  Serial.println("invalid command, abort " + String(InputBuffer_Serial));
+ return;
+}  
 
-if(Serial.available() < 13 ) return; //buffer must be at least 13
-delay(100); //we wait a little for more data
-// Serial.println("incoming bytes available, number = " + String(Serial.available()) );
+//if(Serial.available() < 4 ) { 
+//  delay(200); //we wait a little for more data as the esp seems slow
+//  if(Serial.available() < 13 ) {
+//    while(Serial.available()) { Serial.read(); } // make the buffer empty
+//    Serial.println("invalid command, abort " + String(InputBuffer_Serial));
+//    return;
+//  }
+//}
 
+// now we know there are at least 13 bytes so we read them
  while(Serial.available()) {
              SerialInByte=Serial.read(); 
              //Serial.print("+");
@@ -33,31 +47,70 @@ Serial.println("InputBuffer_Serial = " + String(InputBuffer_Serial) );
           File file = root.openNextFile();
           int total = 0;
           while(file){
-             //Serial.print("FILE: ");
-             //Serial.println(file.name());
-             //Serial.println(file.size());
              total += file.size();
              Serial.println("File: " + String(file.name()) + " size: " + String(file.size()) ); 
-             
              file = root.openNextFile();
           }
           Serial.println("total SPIFFS = " + String(total));
           return;
         
-        
         } else
+
+        if (strcasecmp(InputBuffer_Serial,"CHECK-TOUCHSENSOR")==0) {
+          //int val = touchRead(TOUCHPIN);
+          Serial.println("\ntouch value = " + String(touchRead(TOUCHPIN)) );
+          return;
+        } else        
+
         if (strcasecmp(InputBuffer_Serial,"DEVICE-REBOOT")==0) {
           Serial.println("\ngoing to reboot ! \n");
            delay(1000);
            ESP.restart();
             
         } else
+
+          if (strncasecmp(InputBuffer_Serial, "SETVAR",6)==0) {
+       
+           String setvar = InputBuffer_Serial;
+           setvar = setvar.substring(7); // clean 'SETVAR;'
+           Serial.println("string setvar cleaned = " + setvar);
+           // now shoud have like variable;123;
+           int pos1 = setvar.indexOf(';');
+           int pos2 = setvar.lastIndexOf(';');
+           String var = setvar.substring(0,pos1);
+           Serial.println("string var = " + var);
+           String val = setvar.substring(pos1+1,pos2);
+           //Serial.println("string val = " + val);                     
+           int var_len = var.length();
+           Serial.println("var length = " + String(var_len) );
+           int value=val.toInt();
+           Serial.println("value = " + String(value));
+           delay(100); // to get serial.print by
+           if(var == "touch_th") {
+             delay(100);
+             touch_th = value;
+             Serial.println("touch_th set to " + String(touch_th) );
+             return;
+             } else
+           if(var == "ledon_time") {
+             delay(100);
+             ledon_time = value;
+             Serial.println("ledon_time set to " + String(ledon_time) );
+             return;
+           } else
+           if(var == "rotate") {
+             delay(100);
+             if(val == "true") rotate=true; else rotate = false; 
+             Serial.println("rotate set to " + String(rotate) );
+             return;
+           }                       
+           Serial.println("no such variable !");
+           return;
+        } else        
+        
         if (strncasecmp(InputBuffer_Serial, "WIFI",4)==0) {
-           //sprintf(InputBuffer_Serial,"20;RESET OK;");
-           //Serial.println(InputBuffer_Serial);
-           
+       
            String credent = InputBuffer_Serial;
-           //Serial.println("string credent = " + credent);
            credent = credent.substring(5); // WIFI;
            Serial.println("string credentials cleaned = " + credent);
            int pos1 = credent.indexOf(';');
@@ -116,13 +169,6 @@ Serial.println("InputBuffer_Serial = " + String(InputBuffer_Serial) );
              sprintf(InputBuffer_Serial, "CMD UNKNOWN;"); // 
              Serial.println( InputBuffer_Serial );
         }
-
 }
 
-String readSerial() {
-    while(Serial.available() == 0) { } 
-    String rec = Serial.readString();
-    //Serial.println("\nyou entered " + rec);
-    Serial.println("\nentered " + rec + " len=" + String(rec.length()) );
-    return rec;
-}               
+               

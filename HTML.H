@@ -1,12 +1,33 @@
-const char STYLESHEET[] = R"=====(
+const char HTML_HEAD[] = R"=====(
+<!DOCTYPE html><html><head><meta charset='utf-8'>
+<title>ESP32-CAM</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="/STYLESHEET">
 
+<script type='text/javascript'>
+
+function showSubmit() {
+document.getElementById("sub").style.display = "block";
+}
+function submitFunction(a) {
+document.getElementById("bo").innerHTML="<br>wait...<br>processing<br>your<br>request"; 
+document.getElementById("bo").style.display="block"; 
+document.getElementById('formulier').submit();
+setTimeout(function(){window.location.href=a;}, 3000 ); 
+}
+</script>
+</head>
+
+)=====";
+
+const char STYLESHEET[] = R"=====(
 body {
   background: linear-gradient(#e8f5f7, #caf5fb); 
   color:navy;
   font-family:'lato',Verdana,Sans-serif;
   font-size:16px;
   }
-#divstijl { background: linear-gradient(#e8edc8, #c8eaed); padding:0px 0px 0px 0px; width: 96%; height: 99%; }
+#divstijl { background: linear-gradient(#e8edc8, #c8eaed); padding:0px 0px 0px 0px; width: 96%; height: 55vh; }
 #msect { display: flex; flex-basis: 100%; align-items: center; margin: 0px 0px; width:96vw;}
 #msect:before, #msect:after { content: ""; flex-grow: 1;  margin: 0px 0px;}
 p {
@@ -54,18 +75,14 @@ p {
     border-radius:8px; 
     width:100px; height:38px;
     }
-input { font-size:24px; }
+input { font-size:16px; }
 .inp1 {width:60px;}
 .inp2 {width:80px;} 
 .inp3 {width:100px;} 
 .inp4 {width:205px;} 
 .inp5 {width:200px;}
-.inp6 {width:300px;} 
+.inp6 {width:240px;} 
 option {direction: ltr;}
-.sb1 {
-   font-size:30px;
-   height:40px;
-  } 
  
 tr {height:45px;} 
 input[type=checkbox] 
@@ -98,143 +115,79 @@ li a {
   }
 li a:hover { background-color: #ff0808 !important;} 
 a:focus {background-color: red;}   
-.sub {
-    display: inline-block;
-    background:red;
-    border:none;
-    margin:0;
-    padding:10;
-    cursor: pointer;
-    color:black;
-    font-weight: bold;
-    font-size:16px; 
-    height: 48px; }   
+#sub { float: left; background:green; display:none }
+
 .close {
+  width:20px; 
+  padding: 0px 10px;
   color: red;
   float: right;
-  font-size: 48px;
+  font-size: 32px;
   font-weight: bold;
   cursor: pointer;
 }
 .close:hover {color: green;}
-
+.sb1 {font-size:16px; height:24px; }
+#bo {width:100%; height:100%; position: absolute; left:0; top:0; background-color:rgba(192,192,192,0.9); color:white; z-index:10; font-size: 70px;font-weight: bold; text-align: center; display: none;}
+#fright {float:right;}
 @media only screen and (max-width: 600px) { 
   li a { font-size:14px; 
     padding: 14px 26px 10px 12px; 
     width: 50px; 
    }
-  input { font-size:18px; }
+  .divstijl {width:98vw;}
+
+  body { font-size:12px; }
 }
 )=====";
 
- const char HTML_HOMEPAGE[] = R"=====(
+ 
+
+ const char HTML_CAPTURE[] = R"=====(
 <!DOCTYPE html><html><head><meta charset='utf-8' name="viewport" content="width=device-width, initial-scale=1"><title>HANSIART ESP32 CAM</title>
 <link rel="stylesheet" type="text/css" href="/STYLESHEET">  
 <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<body><center>
 
-<style>
-#strm, #overlay, #fake {
-  width:370px; 
-  height:250px;
-}
-#strm {object-fit: scale-down;}
-
-#fake, #overlay{
-  text-align:center;
-  background: lightgrey;
-  border: solid 2px black;
-  }
-.mar {
-width:300px; 
-height:30px;
-font-size:26px;
-}
-
-
-@media only screen and (max-width: 600px) { 
-#strm, #fake, #overlay {
-  width:100%; 
-  height:250px;
-  }
-}
-</style>
-</head> 
-  <body><div id='msect'><center><h3>HAIPS</h3>
-  <p>the camera has started</p>
+  <div id="container">
+    <h2>ESP32-CAM Last Photo</h2>
+    <p>It might take more than 5 seconds to capture a photo.</p>
+    <p>
+      <button onclick="rotatePhoto();">ROTATE</button>
+      <button onclick="capturePhoto()">CAPTURE PHOTO</button>
+      <button onclick="location.reload();">REFRESH PAGE</button>
+    </p>
+  </div>
+  <div><img src="saved-photo" id="photo" width="70%"></div>
+</body>
 <script>
-
-function contentLoaded() {
-        console.log("data loaded");
-        // now we hide the overlay and show the cameraview
-        document.getElementById("overlay").style.display = "none";
-        document.getElementById("strm").style.display = "block";
-    }
-
-function toggle_view() {
-var hihaho = document.getElementById("strm").src; 
-if(hihaho.indexOf("dummy") == -1) {
-window.location.reload();  
-} else {
-// show a preload
-document.getElementById("fake").style.display = "none";
-document.getElementById("overlay").style.display="block";
-
-if (location.href.indexOf("#") != -1) {
-console.log("found hash");  
-var currentUrl = window.location.href.slice(0, -2); // remove the /#
-} else {
-var currentUrl = window.location.href.slice(0, -1); // remove the slash
-}
-console.log("currentUrl = " + currentUrl);
-//the regex checks if there is a colon with at least 1 digit behind it (and no other characters slashes)
-var regex = /^.+:\d+$/;
-var newUrl ="";
-console.log("test = " + regex.test(currentUrl));
-if(regex.test(currentUrl))  {
-// we have a port so we replace the last 2 characters with 91/stream
-newUrl = currentUrl.slice(0, -2) + '91/stream';
-} else {
-//we just add :91/stream
-newUrl = currentUrl + ':91/stream';
-}
-console.log("newUrl = " + newUrl);
-document.getElementById("strm").src = newUrl;
-
-}
-}
-
-function helpfunctie() {
-alert("In case of malfunction: \nOnly one client at a time is possible. Check if the stream is opened in another browser or window.\nIf you see the warning \"camera not started\", please reboot.\nWhen there is a hash (#) in your url it won't work! \n\nTo view the stream in a browser, the url is\"camera-ip:91/stream");
-}
-
+  var deg = 0;
+  function capturePhoto() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', "/capture", true);
+    xhr.send();
+  }
+  function rotatePhoto() {
+    var img = document.getElementById("photo");
+    deg += 90;
+    if(isOdd(deg/90)){ document.getElementById("container").className = "vert"; }
+    else{ document.getElementById("container").className = "hori"; }
+    img.style.transform = "rotate(" + deg + "deg)";
+  }
+  function isOdd(n) { return Math.abs(n % 2) == 1; }
 </script>
-
-<ul>
-<li><a href='#' onclick='helpfunctie()'>help</a></li>
-<li style='float: right'><a href='/BASISCONFIG'>menu</a></li>
-</ul>
-<br><br>
-<div id='divstijl'><center><br>
-
-<div id="fake" style="display:block;" onclick="toggle_view()"><h3><br><br><br><br>&nbsp&nbspClick here to toggle camera view !</h3></div>
-
-<div id="overlay" style="display:none;" onclick="toggle_view()"><h3><br><br><br>
-<marquee class="mar" direction="left" scrollamount="12" >Waiting for data ! If this takes too long, click help</marquee>
-</div>
-
-<image id="strm" src="dummy" onclick="toggle_view()" onload="contentLoaded(this)" onloadstart="stalled()" style="display:none"></image>
-
-<br>
-<p>ESP32-CAM-v1_3 Powered by hansiart</p>
-</div>
 </html>
-)====="; 
+)=====";
 
 const char CONFIRM[] = R"=====(
 <!DOCTYPE html><html><head><meta charset='utf-8'><body style='font-size:16px;'>
-<head></head><body><div id='msect><center><script type='text/javascript'>
-setTimeout(function(){window.location.href='/';}, 3000 );</script>
-<h1> please wait..</h1><h3>When the requested action has been completed,<br><br>This page will close automatically.<br><br></body></html>
+<head></head><body>
+<div id='msect'><center>
+<h1> please wait..</h1><h3>When the requested action has been completed,<br><br>This page will close automatically.<br><br>
+<script>
+setTimeout(function(){ window.location.href='/'; }, 3000 );
+</script>
+</body></html> 
 )=====";
 
 const char CONFIRM_IP[] = R"=====(

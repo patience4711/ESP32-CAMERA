@@ -16,11 +16,11 @@ void Files_Read() {
 //          } else {
 //            DebugPrintln("timerconfig.json niet geladen");
 //          }
-//       if( file_open_for_read("/mqttconfig.json") ) {     
-//             DebugPrintln("mqttconfig gelezen");
-//          } else {
-//          DebugPrintln("mqttconfig.json niet geladen");
-//        }
+       if( file_open_for_read("/mqttconfig.json") ) {     
+             DebugPrintln("read mqttconfig");
+          } else {
+          DebugPrintln("mqttconfig.json not loaded");
+        }
        if( file_open_for_read("/basisconfig.json") ) {     
              DebugPrintln("basisconfig read");
           } else {
@@ -83,29 +83,30 @@ void wifiConfigsave() {
     configFile.close();
 }
 
-//void timerConfigsave() {   
-//DebugPrintln("saving config");
-//    DynamicJsonDocument doc(1024);
-//    JsonObject json = doc.to<JsonObject>();
-//
-//    json["weekDag"] = weekDag;
-//    json["relToSunOn"] = relToSunOn;
-//    json["relToSunOff"] = relToSunOff;   
-//    json["switchOn"] = switchOn;   
-//    json["switchOff"] = switchOff;  
-//
-//    File configFile = SPIFFS.open("/timerconfig.json", "w");
-//    if (!configFile) {
-//      DebugPrintln("failed to open timerconfig file for writing");
-//    }
-//    DebugPrintln("timerconfig.json in SPIFFS geschreven");
-//    #ifdef DEBUG
-//    serializeJson(json, Serial);
-//    Serial.println(""); 
-//    #endif
-//    serializeJson(json, configFile);
-//    configFile.close();
-//}
+void mqttConfigsave() {
+   //DebugPrintln("saving mqtt config");
+    DynamicJsonDocument doc(1024);
+    JsonObject json = doc.to<JsonObject>();
+    json["Mqtt_Port"]     = Mqtt_Port;
+    json["Mqtt_Broker"]   = Mqtt_Broker;
+    json["Mqtt_idx"]      = Mqtt_idx;    
+    json["Mqtt_outTopic"] = Mqtt_outTopic;
+    json["Mqtt_Username"] = Mqtt_Username;
+    json["Mqtt_Password"] = Mqtt_Password;
+    json["Mqtt_Format"]   = Mqtt_Format;
+        
+    File configFile = SPIFFS.open("/mqttconfig.json", "w");
+    if (!configFile) {
+      //DebugPrintln("open file for writing failed");
+    }
+    Serial.println("mqttconfig.json written");
+    #ifdef DEBUG
+    serializeJson(json, Serial);
+    Serial.println(F("")); 
+    #endif
+    serializeJson(json, configFile);
+    configFile.close();
+}
 
 void basisConfigsave() {
    DebugPrintln("saving basis config");
@@ -114,6 +115,9 @@ void basisConfigsave() {
 // 
     json["swName"] = swName;
     json["userpswd"] = userpswd;
+    json["doorBell"] = doorBell;
+    json["touch_th"] = touch_th;
+    json["rotate"] = rotate;
     File configFile = SPIFFS.open("/basisconfig.json", "w");
     if (!configFile) {
       DebugPrintln("failed to open config file for writing");
@@ -225,18 +229,31 @@ bool file_open_for_read(String bestand) {
             if (bestand == "/wificonfig.json") {
                       if(jsonStr.indexOf("ip") > 0){ strcpy(static_ip, doc["ip"]);}
                       if(jsonStr.indexOf("pswd") > 0){ strcpy(pswd, doc["pswd"]);}
-                      if(jsonStr.indexOf("lengte") > 0){ strcpy(lengte, doc["lengte"]);}
-                      if(jsonStr.indexOf("breedte") > 0){ strcpy(breedte, doc["breedte"]);}
-                      if(jsonStr.indexOf("timezone") > 0){ strcpy(timezone, doc["timezone"]);}
+ //                     if(jsonStr.indexOf("lengte") > 0){ strcpy(lengte, doc["lengte"]);}
+ //                     if(jsonStr.indexOf("breedte") > 0){ strcpy(breedte, doc["breedte"]);}
+//                     if(jsonStr.indexOf("timezone") > 0){ strcpy(timezone, doc["timezone"]);}
                       //if(jsonStr.indexOf("gpBool") > 0){ strcpy(gpBool, doc["gpBool"]);}
-                      if(jsonStr.indexOf("zomerTijd") > 0) { zomerTijd =  doc["zomerTijd"].as<bool>();}
+ //                     if(jsonStr.indexOf("zomerTijd") > 0) { zomerTijd =  doc["zomerTijd"].as<bool>();}
             }
 
             if (bestand == "/basisconfig.json"){
                      if(jsonStr.indexOf("swName") > 0){strcpy(swName, doc["swName"]);}
                      if(jsonStr.indexOf("userpswd") > 0){ strcpy(userpswd, doc["userpswd"]);}
+                     if(jsonStr.indexOf("doorBell") > 0) { doorBell =  doc["doorBell"].as<bool>();}
+                     if(jsonStr.indexOf("touch_th") > 0) { touch_th = doc["touch_th"].as<int>();}
+                     if(jsonStr.indexOf("rotate") > 0) { rotate =  doc["rotate"].as<bool>();}
             }
-
+            if (bestand == "/mqttconfig.json"){
+                     if(jsonStr.indexOf("Mqtt_Broker")   >  0) { strcpy(Mqtt_Broker,   doc["Mqtt_Broker"]);}
+                     if(jsonStr.indexOf("Mqtt_Port")     >  0) { strcpy(Mqtt_Port,     doc["Mqtt_Port"]);}  
+                     if(jsonStr.indexOf("Mqtt_idx")      >  0) { Mqtt_idx =            doc["Mqtt_idx"].as<int>();}               
+                     if(jsonStr.indexOf("Mqtt_outTopic") >  0) { strcpy(Mqtt_outTopic, doc["Mqtt_outTopic"]);}         
+                     if(jsonStr.indexOf("Mqtt_Username") >  0) { strcpy(Mqtt_Username, doc["Mqtt_Username"]);}
+                     if(jsonStr.indexOf("Mqtt_Password") >  0) { strcpy(Mqtt_Password, doc["Mqtt_Password"]);}
+                     if(jsonStr.indexOf("Mqtt_Format")   >  0) { Mqtt_Format =         doc["Mqtt_Format"].as<int>();}
+            }
+//             return true;
+//}
             if (bestand == "/cameraconfig.json") {
               sensor_t * s = esp_camera_sensor_get();
               int res = 0;
@@ -338,12 +355,12 @@ there is some conversion between the save and restore
             }           
       
        }
-            return true;
-           } else {
-              Serial.print(F("deserializeJson() failed with code "));
-              Serial.println(error.c_str());
-            return false;
-           }
+        return true;
+       } else {
+          Serial.print(F("deserializeJson() failed with code "));
+          Serial.println(error.c_str());
+        return false;
+       }
      }
   }  
 }
