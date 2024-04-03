@@ -1,6 +1,6 @@
 # ESP32-CAMERA
 With this cheap little board we can have a very nice camera to view on our phone. <br> 
-The example software has many shortcomings that i improved. This was not an easy job as the original software is difficult to understand and not documented.<br>The result is a complete websverver with very nice features. visi the [wiki](https://github.com/patience4711/ESP32-CAMERA/wiki) for more info on this project.
+The example software has many shortcomings that i improved. This was not an easy job as the original software is difficult to understand and not documented.<br>The result is a complete websverver with very nice features. visit the [wiki](https://github.com/patience4711/ESP32-CAMERA/wiki) for more info on this project.
 ![camhouse](https://github.com/patience4711/ESP32-CAMERA/assets/12282915/22a264fe-db46-47ee-ad5b-8151959807ca)
 
 ## some of the features
