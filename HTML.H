@@ -119,9 +119,8 @@ a:focus {background-color: red;}
 
 .close {
   width:20px; 
-  padding: 0px 10px;
+  padding: 0px 30px;
   color: red;
-  float: right;
   font-size: 32px;
   font-weight: bold;
   cursor: pointer;
@@ -130,6 +129,16 @@ a:focus {background-color: red;}
 .sb1 {font-size:16px; height:24px; }
 #bo {width:100%; height:100%; position: absolute; left:0; top:0; background-color:rgba(192,192,192,0.9); color:white; z-index:10; font-size: 70px;font-weight: bold; text-align: center; display: none;}
 #fright {float:right;}
+
+.fake, .overlay{
+  width:370px; 
+  height:250px;
+  text-align:center;
+  background: lightgrey;
+  border: solid 2px black;
+  }
+.mar {width:260px; height:30px; font-size:26px;}
+
 @media only screen and (max-width: 600px) { 
   li a { font-size:14px; 
     padding: 14px 26px 10px 12px; 
@@ -147,34 +156,45 @@ a:focus {background-color: red;}
 <!DOCTYPE html><html><head><meta charset='utf-8' name="viewport" content="width=device-width, initial-scale=1"><title>HANSIART ESP32 CAM</title>
 <link rel="stylesheet" type="text/css" href="/STYLESHEET">  
 <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-<body><center>
+<style>
+img {
+width : 70%;
+height:auto;
+}
+.rot {
+ transform-origin: 44% 62% 0; 
+ transform: rotate(90deg);
+}
+@media only screen and (max-width: 600px) {
+img { width : 98%; }
+}
+</style>
 
+<body><center>
+<span id='fright' class='close' style="font-size:52px;" onclick='cl();'>&times;</span>
   <div id="container">
-    <h2>ESP32-CAM Last Photo</h2>
-    <p>It might take more than 5 seconds to capture a photo.</p>
+    <h3>ESP32-CAM PHOTO VIEW</h3>
     <p>
-      <button onclick="rotatePhoto();">ROTATE</button>
-      <button onclick="capturePhoto()">CAPTURE PHOTO</button>
-      <button onclick="location.reload();">REFRESH PAGE</button>
+      <button onclick="rotatePhoto();">ROTATE PHOTO</button>
+      <button onclick="location.reload();">REFRESH PHOTO</button>
     </p>
   </div>
-  <div><img src="saved-photo" id="photo" width="70%"></div>
+
+  <img src="saved-photo" id="photo" width="70%" alt="no image found">
 </body>
 <script>
-  var deg = 0;
-  function capturePhoto() {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', "/capture", true);
-    xhr.send();
-  }
+function cl() { window.location.href='/'; }
+
   function rotatePhoto() {
     var img = document.getElementById("photo");
-    deg += 90;
-    if(isOdd(deg/90)){ document.getElementById("container").className = "vert"; }
-    else{ document.getElementById("container").className = "hori"; }
-    img.style.transform = "rotate(" + deg + "deg)";
+    if(img.classList.contains("rot")) {
+    console.log("image was rotated")  
+    img.classList.remove("rot");
+    } else {  
+    img.classList.add("rot");
+    }
   }
-  function isOdd(n) { return Math.abs(n % 2) == 1; }
+
 </script>
 </html>
 )=====";

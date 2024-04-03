@@ -5,7 +5,7 @@
 <ul>
 <li id='fright'><span class='close' onclick='cl();'>&times;</span>
 <li><a href='{ctrl}' '>camera</a></li>
-<li><a href='/IPCONFIG'>ip conf</a></li>
+<li><a href='/PHOTO' '>photo</a></li>
 <li><a href='/MQTT'>mqtt</a></li>
 </ul>
 <div id='divstijl'><center>
@@ -22,6 +22,7 @@
 </div><br>
 <ul>
 <li id='sub'><a href='#' onclick='submitFunction("/")'>save</a></li>
+<li><a href='/IPCONFIG'>ip conf</a></li>
 <li><a onclick="return confirm('are you sure to start AP?')" href='/STARTAP'>start ap</a></li>
 <li><a onclick="return confirm('are you sure to reboot?')"href='/REBOOT'>reboot</a></li>
 <br></div></body></html>
@@ -34,7 +35,7 @@ void zendPageBasis() {
     IPAddress ip = WiFi.localIP();
     String adres = String(ip[0]) + "." + String(ip[1]) + "." + String(ip[2]) + "." + String(ip[3]);
     String controllink = "http://" + adres + ":90";
-    toSend.replace("{ctrl}", controllink);   
+    toSend.replace("{ctrl}", controllink); // for the camerea settings page  
 
     // replace form data
     toSend.replace("'{nm}'" , "'" + String(swName) + "'") ;

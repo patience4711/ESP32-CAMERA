@@ -13,24 +13,23 @@ asyserver.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
     
     toSend.replace( "HAIPS", String(swName) ); // we must replace {strm} by http://ip:81/stream
     // put local ip in a string
-    IPAddress ip = WiFi.localIP();
-    String adres = String(ip[0]) + "." + String(ip[1]) + "." + String(ip[2]) + "." + String(ip[3]);
-    String streamlink = "http://" + adres + ":91/stream";
-    toSend.replace("{strm}", streamlink);
-    Serial.println("streamlink = " + streamlink);
+//    IPAddress ip = WiFi.localIP();
+//    String adres = String(ip[0]) + "." + String(ip[1]) + "." + String(ip[2]) + "." + String(ip[3]);
+//    String streamlink = "http://" + adres + ":91/stream";
+//    toSend.replace("{strm}", streamlink);
+//    Serial.println("streamlink = " + streamlink);
     if(rotate) toSend.replace("0123", "3210");
     
     request->send(200, "text/html", toSend);
 });
 
-asyserver.on("STREAM", HTTP_GET, [](AsyncWebServerRequest *request) {
+asyserver.on("/STREAM", HTTP_GET, [](AsyncWebServerRequest *request) {
     Serial.println("stream requested");    
     if (!request->authenticate("admin", pswd) && !request->authenticate("user", userpswd)) return request->requestAuthentication();
-    // put local ip in a string
-    IPAddress ip = WiFi.localIP();
-    String adres = String(ip[0]) + "." + String(ip[1]) + "." + String(ip[2]) + "." + String(ip[3]);
-    String streamlink = "http://" + adres + ":91/stream";
-    request->redirect(streamlink);
+    toSend = FPSTR(HTML_HEAD);
+    toSend += FPSTR(HTML_STREAMPAGE);
+    if(rotate) toSend.replace("0123", "3210");
+    request->send(200, "text/html", toSend);
 });
 
 

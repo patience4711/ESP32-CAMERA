@@ -221,14 +221,12 @@ void loop() {
 
   // read the touch sensor
   // touch0=gp4 1=gp00 2=gp2 3=gp15 4=gp13 5=gp12 6=gp14
+  if(doorBell){
   if(touchRead(TOUCHPIN) < touch_th ) handleTouch();
-
-   if ( millis() > laatsteMeting + ledon_time*1000UL ) { //20 sec
+  if ( millis() > laatsteMeting + ledon_time*1000UL ) { //20 sec
     digitalWrite(flashLed, LOW);
   }
-  
-
-
+  }  
     if(Serial.available()) {
         handle_Serial();
     }  
@@ -239,7 +237,7 @@ void loop() {
        // so we don't do this in the loop
        if(Mqtt_Format != 0 ) MQTT_Client.loop(); //looks for incoming messages
 
-   test_actionFlag();
+ if(actionFlag != 0)  test_actionFlag();
 
   if (takeNewPhoto) {
     capturePhotoSaveSpiffs();

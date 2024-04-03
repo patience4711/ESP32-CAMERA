@@ -22,7 +22,7 @@ const char HTML_HOMEPAGE[] = R"=====(
   transform: rotate(90deg);
 }
 
-.fake, .overlay{
+/*.fake, .overlay{
   width:370px; 
   height:250px;
   text-align:center;
@@ -30,6 +30,7 @@ const char HTML_HOMEPAGE[] = R"=====(
   border: solid 2px black;
   }
 .mar {width:260px; height:30px; font-size:26px;}
+*/
 img {
   max-width:100%;
   max-height:100%;
@@ -62,6 +63,14 @@ img {
 
 <script>
 const orientation = document.getElementById("shouldRotate");
+
+function capturePhoto() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', "/capture", true);
+    xhr.send();
+  alert("photo saved");
+  }
+
 function contentLoaded() {
         console.log("data loaded");
         // now we hide the overlay and show the cameraview
@@ -129,6 +138,8 @@ alert("In case of malfunction: \nOnly one client at a time is possible. Check if
 
 <ul>
 <li><a href='#' onclick='helpfunctie()'>help</a></li>
+<li><a href='/STREAM'>full</a></li>
+<li><a href='#' onclick="capturePhoto()">still</a></li>
 <li style='float: right'><a href='/MENU'>menu</a></li>
 </ul>
 <br>
@@ -153,5 +164,98 @@ alert("In case of malfunction: \nOnly one client at a time is possible. Check if
 <p>ESP32-CAM-v1_4 Powered by hansiart</p>
 </div>
 
+<body></html>
+)====="; 
+
+// ************************************************************************************************************
+
+const char HTML_STREAMPAGE[] = R"=====(
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+img {
+  max-width:100%;
+  max-height:100%;
+  object-fit: cover;
+}
+.img_rot {
+transform:rotate(90deg);
+}
+
+@media only screen and (max-width: 600px) { 
+.fake, .overlay {
+  width:90%; 
+  height:250px;
+  }
+
+.flex-portrait {
+  object-fit: cover;
+  overflow: auto; 
+}
+
+
+}
+
+</style>
+</head> 
+  <body onload="loadSrc()"><center>
+  <div id='shouldRotate' style='display: none;'>0123</div>
+
+<script>
+const orientation = document.getElementById("shouldRotate");
+var STRM = document.getElementById("strm");
+
+function cl() { window.location.href='/'; }
+function contentLoaded() {
+        console.log("data loaded");
+        document.getElementById("overlay").style.display = "none";
+    }
+
+function loadSrc() {
+var STRM = document.getElementById("strm");
+console.log("startUrl= " + window.location.href);
+var currentUrl = window.location.href.slice(0, -7); // remove the slash/STREAM
+//so now we have only the ip but from remote it was 'address:2480/STREAM'
+//so we have to check for port and remove it
+console.log("currentUrl = " + currentUrl);
+var regex = /^.+:\d+$/;
+console.log("test = " + regex.test(currentUrl));
+if(regex.test(currentUrl))  {
+// we have a port so we replace the last 2 characters with 91/stream
+newUrl = currentUrl.slice(0, -2) + '91/stream';
+} else {
+//we just add :91/stream
+newUrl = currentUrl + ':91/stream';
+}
+
+//newUrl = "http://192.168.0.208:91/stream";  //for test
+console.log("newUrl = " + newUrl);
+STRM.src = newUrl;
+
+if(orientation.innerHTML == "3210") {
+STRM.classList. add("img_rot");
+STRM.style.display="block";
+
+  } else {
+  console.log("show landscape ");
+  STRM.style.display="block";
+  }
+}
+</script>
+<span id='fright' class='close' style="font-size:52px;" onclick='cl();'>&times;</span>
+<br>
+
+<div id="overlay" class="im_cont overlay" style="display:block;">
+<h3><br><br><br><br><marquee id='marq' class='mar' direction='left' scrollamount='12' >Waiting for data ! If this takes too long, click help</marquee></h3>
+</div>
+<img id="strm" src="dummy" onload="contentLoaded(this)" style="display: none;" alt="no data"></image>
+
+<br>
+<p>ESP32-CAM-v1_4 Powered by hansiart</p>
+
+</div>
 <body></html>
 )====="; 
