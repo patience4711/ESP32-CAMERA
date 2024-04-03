@@ -13,9 +13,12 @@ The example software has many shortcomings that i improved. This was not an easy
 - very compact, small enough to fit in a bird's nestbox
 - the stream can be opened in any browser, easy to embed in website
 - we can set a doorbell functionality (led on and send mqtt message)
+- from the main ui we can take a photo shot that is saved to SPIFFS
+- we can view the camera in full image size
 
 frontpage<br>
-![frontpage](https://github.com/patience4711/ESP32-CAMERA/assets/12282915/c96e1cb3-6924-4acb-8fa0-94ae172bee7d)
+![frontpage](https://github.com/patience4711/ESP32-CAMERA/assets/12282915/8f36c851-44fa-4af4-b76c-91c57271dad5)
+
    
 ## downloads
 you can find the latest binary here [ESP32-CAM-v1_4]([https://github.com/patience4711/ESP32-CAMERA/blob/main/ESP32-CAM_v1_3.ino.esp32.bin](https://github.com/patience4711/ESP32-CAMERA/blob/main/ESP32-CAM_v1_4-exp.ino.esp32.bin))<br>
