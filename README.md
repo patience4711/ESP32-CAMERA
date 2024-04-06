@@ -29,7 +29,9 @@ The easiest way is to flash the provided binary. There are several ways to do th
 <br>Please note: by popular demand I have published the code here but i do not feel responsible for problems as to compiling. Impossible for me to know why it doesn't compile in your situation.
 
 ## other challenges
-view orientation
-The esp32cam boards can have a different image orientation, i have 2 boards, one is portrait and the other landscape. So there should be an option to rotate the image in the software. I have already found a way to do this and implemented it in version 1_4.
-I also added an option to use the device as a doorbell that sends an mqtt message. And an option to make a photo and save it on SPIFFS
-The face recognition seems not to work on this board. Still anothe thing to research is to make a custom partition scheme so that we have more program space.
+**View orientation**<br>
+The esp32cam boards come with different image orientations, i have 2 boards, one is portrait and the other landscape. So there should be an option to rotate the image in the software. I have already found a way to do this and implemented it in version 1_4.<br>
+**Doorbell**<br>
+I also added an option to use the device as a doorbell that sends an mqtt message. And an option to make a photo and save it on SPIFFS.
+**face recognition**<br>
+The face recognition seems not to work on this board. Still another thing to research is to make a custom partition scheme so that we have more program space.
