@@ -1,6 +1,6 @@
 # ESP32-CAMERA
 With this cheap little board we can have a very nice camera to view on our phone. <br> 
-The example software has many shortcomings that i improved. This was not an easy job as the original software is difficult to understand and not documented.<br>The result is a complete websverver with very nice features. visit the [wiki](https://github.com/patience4711/ESP32-CAMERA/wiki) for more info on this project.
+The example software has many shortcomings that i improved. This was not an easy job as the original software is difficult to understand and not documented.<br>The result is a complete websverver with very nice features. visit the [wiki](https://github.com/patience4711/ESP32-CAMERA/wiki) for more info on this project.<br><br>
 ![camhouse](https://github.com/patience4711/ESP32-CAMERA/assets/12282915/22a264fe-db46-47ee-ad5b-8151959807ca)
 
 ## some of the features
@@ -24,8 +24,8 @@ frontpage<br>
 you can find the latest binary here [ESP32-CAM-v1_4]([https://github.com/patience4711/ESP32-CAMERA/blob/main/ESP32-CAM_v1_3.ino.esp32.bin](https://github.com/patience4711/ESP32-CAMERA/blob/main/ESP32-CAM_v1_4-exp.ino.esp32.bin))<br>
 if you own a 3d-printer you can use [camhouse.stl](https://github.com/patience4711/ESP32-CAMERA/blob/main/camhouse.stl) end [camhouse_top.stl](https://github.com/patience4711/ESP32-CAMERA/blob/main/camhouse_TOP.stl) to print a nice housing.
 
-## compile this sketch
-The most conveniant way is to flash the provided binary. There are several ways to do this, google for instructions.  If you must compile it yourself: read [here in the WIKI](https://github.com/patience4711/ESP32-CAMERA/wiki/compile) for instructions on how to do it.
+## flash or compile this sketch
+The easiest way is to flash the provided binary. There are several ways to do this, google for instructions.  If you must compile it yourself: read [here in the WIKI](https://github.com/patience4711/ESP32-CAMERA/wiki/compile) for instructions on how to do it.
 <br>Please note: by popular demand I have published the code here but i do not feel responsible for problems as to compiling. Impossible for me to know why it doesn't compile in your situation.
 
 ## other challenges
