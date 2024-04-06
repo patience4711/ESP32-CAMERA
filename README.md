@@ -25,7 +25,7 @@ you can find the latest binary here [ESP32-CAM-v1_4]([https://github.com/patienc
 if you own a 3d-printer you can use [camhouse.stl](https://github.com/patience4711/ESP32-CAMERA/blob/main/camhouse.stl) end [camhouse_top.stl](https://github.com/patience4711/ESP32-CAMERA/blob/main/camhouse_TOP.stl) to print a nice housing.
 
 ## compile this sketch
-You can use the provided binary but if you must compile it yourself: read the legende tab for instructions on settings in Arduino IDE
+You can use the provided binary but if you must compile it yourself: read [here in the WIKI](https://github.com/patience4711/ESP32-CAMERA/wiki/compile) for instructions on how to do it.
 <br>Please note: by popular demand I have published the code here but i do not feel responsible for problems as to compiling. Impossible for me to know why it doesn't compile in your situation.
 
 ## other challenges
